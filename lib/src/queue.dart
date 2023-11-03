@@ -1,14 +1,28 @@
 import 'dart:async';
 
+import 'package:flutter_sqs/src/queue_item.dart';
+
 typedef QueueEventListener<E> = Future<void> Function(E event);
 
 abstract class Queue<E> {
-  final List<E> _internalQueue = [];
+  final List<QueueItem<E>> _internalQueue = [];
 
   E? _current;
 
-  void add(E event) {
-    _internalQueue.add(event);
+  void add(
+    E event, {
+    int? priority,
+  }) {
+    _internalQueue
+      ..add(
+        QueueItem(
+          value: event,
+          priority: priority,
+        ),
+      )
+      ..sort(
+        (a, b) => a.priority.compareTo(b.priority),
+      );
     if (_internalQueue.length == 1) {
       _dispatch();
     }
@@ -25,7 +39,7 @@ abstract class Queue<E> {
   void _dispatch() {
     final first = _internalQueue.firstOrNull;
     if (first != null && first != _current) {
-      _current = first;
+      _current = first.value;
       notifyListeners(_current as E);
     }
   }
