@@ -5,5 +5,5 @@ class QueueItem<T> {
   QueueItem({
     required this.value,
     int? priority,
-  }) : priority = priority ?? double.infinity.toInt();
+  }) : priority = priority ?? double.maxFinite.toInt();
 }
