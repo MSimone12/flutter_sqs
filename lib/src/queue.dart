@@ -1,16 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_sqs/src/queue_item.dart';
 
 typedef QueueEventListener<E> = Future<void> Function(E event);
 
 abstract class Queue<E> {
-  final bool exclusive;
-
-  Queue({
-    this.exclusive = false,
-  });
-
   final List<QueueItem<E>> _internalQueue = [];
 
   E? _current;
@@ -20,21 +15,17 @@ abstract class Queue<E> {
     int? priority,
     String? key,
   }) {
-    if (exclusive) {
-      assert(
-        key != null,
-        'When queue is marked as exclusive, key must be non null',
-      );
-      final hasItem = _internalQueue
-          .where((element) => element.key != null && element.key == key)
-          .isNotEmpty;
-      if (hasItem) return;
-    }
+    final hasItem = _internalQueue
+        .where((element) => element.key != null && element.key == key)
+        .isNotEmpty;
+    if (hasItem) return;
+
     _internalQueue
       ..add(
         QueueItem(
           value: event,
           priority: priority,
+          key: key,
         ),
       )
       ..sort(
@@ -61,7 +52,11 @@ abstract class Queue<E> {
     }
   }
 
-  void dispose();
+  @mustCallSuper
+  void dispose() {
+    _internalQueue.clear();
+    _current = null;
+  }
 
   Future<void> notifyListeners(E event);
 

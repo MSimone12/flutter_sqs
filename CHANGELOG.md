@@ -13,3 +13,8 @@
 ## 1.0.3
 
 * Added the possibility to make the queue exclusive with keyed items
+
+## 1.0.4
+
+* Removed the need to make the queue exclusive to check for keys
+* Improved lifecycle handling

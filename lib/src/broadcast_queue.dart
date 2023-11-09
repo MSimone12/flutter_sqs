@@ -1,8 +1,6 @@
 import 'package:flutter_sqs/src/queue.dart';
 
 class BroadcastQueue<E> extends Queue<E> {
-  BroadcastQueue({super.exclusive});
-
   static final List<QueueEventListener?> _emptyListeners =
       List<QueueEventListener?>.filled(0, null);
   List<QueueEventListener<E>?> _listeners = _emptyListeners;
@@ -37,6 +35,7 @@ class BroadcastQueue<E> extends Queue<E> {
     );
     _listeners = _emptyListeners;
     _count = 0;
+    super.dispose();
   }
 
   @override

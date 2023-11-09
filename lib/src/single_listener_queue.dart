@@ -1,8 +1,6 @@
 import 'package:flutter_sqs/src/queue.dart';
 
 class SingleListenerQueue<E> extends Queue<E> {
-  SingleListenerQueue({super.exclusive});
-
   QueueEventListener<E>? _listener;
 
   bool notifying = false;
@@ -21,8 +19,8 @@ class SingleListenerQueue<E> extends Queue<E> {
 
   @override
   void dispose() {
-    _assertNotifying('dispose');
     _listener = null;
+    super.dispose();
   }
 
   @override
