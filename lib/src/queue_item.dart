@@ -7,5 +7,5 @@ class QueueItem<T> {
     required this.value,
     int? priority,
     this.key,
-  }) : priority = priority ?? double.maxFinite.toInt();
+  }) : priority = priority ?? DateTime.now().millisecondsSinceEpoch;
 }

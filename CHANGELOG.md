@@ -18,3 +18,7 @@
 
 * Removed the need to make the queue exclusive to check for keys
 * Improved lifecycle handling
+
+## 1.0.5
+
+* Improved queue item sorting when no priority is provided
