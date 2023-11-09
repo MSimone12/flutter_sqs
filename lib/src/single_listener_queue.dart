@@ -1,18 +1,22 @@
 import 'package:flutter_sqs/src/queue.dart';
 
 class SingleListenerQueue<E> extends Queue<E> {
+  SingleListenerQueue({super.exclusive});
+
   QueueEventListener<E>? _listener;
 
   bool notifying = false;
 
   @override
-  void addListener(QueueEventListener<E> listener) {
-    assert(
-      _listener == null,
-      'You must call removeListener before adding a new listener',
-    );
-
-    _listener ??= listener;
+  void addListener(
+    QueueEventListener<E> listener, {
+    bool force = false,
+  }) {
+    if (force) {
+      _listener = listener;
+    } else {
+      _listener ??= listener;
+    }
   }
 
   @override

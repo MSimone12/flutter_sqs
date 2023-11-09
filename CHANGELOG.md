@@ -9,3 +9,7 @@
 ## 1.0.2
 
 * fixed unhandled exception when no priority is set
+
+## 1.0.3
+
+* Added the possibility to make the queue exclusive with keyed items
