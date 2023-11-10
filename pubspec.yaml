@@ -1,6 +1,6 @@
 name: flutter_sqs
 description: A Dart Simple Queue System based on ChangeNotifier
-version: 1.0.5
+version: 1.0.6
 repository: https://github.com/MSimone12/flutter_sqs.git
 
 environment:
@@ -8,6 +8,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
 

@@ -8,47 +8,45 @@ typedef QueueEventListener<E> = Future<void> Function(E event);
 abstract class Queue<E> {
   final List<QueueItem<E>> _internalQueue = [];
 
-  E? _current;
+  QueueItem<E>? _current;
 
   void add(
     E event, {
     int? priority,
     String? key,
   }) {
-    final hasItem = _internalQueue
-        .where((element) => element.key != null && element.key == key)
-        .isNotEmpty;
+    final item = QueueItem(
+      value: event,
+      priority: priority,
+      key: key,
+    );
+    final hasItem =
+        _internalQueue.where((element) => element != item).isNotEmpty ||
+            _current != null && _current == item;
     if (hasItem) return;
 
-    _internalQueue
-      ..add(
-        QueueItem(
-          value: event,
-          priority: priority,
-          key: key,
-        ),
-      )
-      ..sort(
-        (a, b) => a.priority.compareTo(b.priority),
-      );
-    if (_internalQueue.length == 1) {
-      _dispatch();
+    _internalQueue.add(item);
+
+    _internalQueue.sort(
+      (a, b) => a.priority.compareTo(b.priority),
+    );
+
+    if (_internalQueue.length == 1 && _current == null) {
+      next();
     }
   }
 
   void next() {
     _current = null;
     if (_internalQueue.isNotEmpty) {
-      _internalQueue.removeAt(0);
+      _current = _internalQueue.removeAt(0);
       _dispatch();
     }
   }
 
   void _dispatch() {
-    final first = _internalQueue.firstOrNull;
-    if (first != null && first != _current) {
-      _current = first.value;
-      notifyListeners(_current as E);
+    if (_current != null) {
+      notifyListeners(_current!.value);
     }
   }
 

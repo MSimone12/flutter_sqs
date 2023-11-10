@@ -22,3 +22,8 @@
 ## 1.0.5
 
 * Improved queue item sorting when no priority is provided
+
+## 1.0.6
+
+* Made QueueItem an Equatable
+* Fixed some weird queue behaviors

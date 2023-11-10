@@ -6,15 +6,8 @@ class SingleListenerQueue<E> extends Queue<E> {
   bool notifying = false;
 
   @override
-  void addListener(
-    QueueEventListener<E> listener, {
-    bool force = false,
-  }) {
-    if (force) {
-      _listener = listener;
-    } else {
-      _listener ??= listener;
-    }
+  void addListener(QueueEventListener<E> listener) {
+    _listener = listener;
   }
 
   @override
