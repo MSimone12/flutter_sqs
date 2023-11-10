@@ -27,3 +27,7 @@
 
 * Made QueueItem an Equatable
 * Fixed some weird queue behaviors
+
+## 1.0.7
+
+* Fixed red error screen when calling removeListener()
